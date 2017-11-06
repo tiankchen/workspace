@@ -15,16 +15,21 @@ import java.sql.*;
 class ExecSQL {
     public static void main(String args[]) throws IOException {
         try {
-            Scanner in = args.length == 0 ? new Scanner(System.in)
-                    : new Scanner(Paths.get(args[0]));
+            try {
+                Class.forName("com.mysql.jdbc.Driver").newInstance();
+            } catch (Exception ex) {
+                ex.printStackTrace();
+                return;
+            }
+
+            Scanner in = args.length == 0 ? new Scanner(System.in) : new Scanner(Paths.get(args[0]));
 
             try (Connection conn = getConnection()) {
                 Statement stat = conn.createStatement();
 
                 while (true) {
                     if (args.length == 0)
-                        System.out.println(
-                                "Enter command or EXIT to exit:");
+                        System.out.println("Enter command or EXIT to exit:");
 
                     if (!in.hasNextLine())
                         return;
@@ -44,8 +49,7 @@ class ExecSQL {
                             showResultSet(rs);
                         } else {
                             int updateCount = stat.getUpdateCount();
-                            System.out.println(
-                                    updateCount + " rows updated");
+                            System.out.println(updateCount + " rows updated");
                         }
                     } catch (SQLException ex) {
                         for (Throwable e : ex)
@@ -57,6 +61,7 @@ class ExecSQL {
             for (Throwable t : e)
                 t.printStackTrace();
         }
+
     }
 
     /**
@@ -65,12 +70,10 @@ class ExecSQL {
      * 
      * @return the database connection
      */
-    public static Connection getConnection()
-            throws SQLException, IOException {
-        
+    public static Connection getConnection() throws SQLException, IOException {
+
         Properties props = new Properties();
-        try (InputStream in = Files
-                .newInputStream(Paths.get("database.properties"))) {
+        try (InputStream in = Files.newInputStream(Paths.get("database.properties"))) {
             props.load(in);
         } catch (NoSuchFileException e) {
             System.out.println(e);
@@ -85,7 +88,8 @@ class ExecSQL {
         String username = props.getProperty("jdbc.username");
         String password = props.getProperty("jdbc.password");
 
-        return DriverManager.getConnection(url, username, password);
+        // return DriverManager.getConnection(url, username, password);
+        return DriverManager.getConnection("jdbc:mysql://localhost/mysql?user=root&password=password");
     }
 
     /**
@@ -94,8 +98,7 @@ class ExecSQL {
      * @param result
      *            the result set to be printed
      */
-    public static void showResultSet(ResultSet result)
-            throws SQLException {
+    public static void showResultSet(ResultSet result) throws SQLException {
         ResultSetMetaData metaData = result.getMetaData();
         int columnCount = metaData.getColumnCount();
 

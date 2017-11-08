@@ -6,3 +6,10 @@ dev
 json
 modle
 classpath
+maven
+plugin
+mybatis
+nampespace
+sql
+mybatis
+mysql

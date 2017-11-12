@@ -1,3 +1,0 @@
-import helloworld
-
-print 'main'

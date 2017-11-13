@@ -8,4 +8,4 @@ from django.http import HttpResponse
 # Create your views here.
 def index(request):
     print request
-    return HttpResponse("Hello, world. You're at the polls index.")
+    return HttpResponse("Hello, shu juan!")

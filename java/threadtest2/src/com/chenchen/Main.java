@@ -2,7 +2,7 @@ package com.chenchen;
 
 public class Main {
     public static void main(String args[]) {
-        new Main().testThreadException();
+        new Main().testCondition();
     }
 
 
@@ -56,14 +56,38 @@ public class Main {
      */
     private void testThreadException() {
         Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler());
-        Thread t =  new Thread(new ThrowExceptionRunnable());
+        Thread t = new Thread(new ThrowExceptionRunnable());
         t.start();
     }
+
 
     class ExceptionHandler implements Thread.UncaughtExceptionHandler {
         @Override
         public void uncaughtException(Thread t, Throwable e) {
             System.out.println("==Exception: " + e.getMessage());
         }
+
+    }
+
+    /**
+     * Test condition lock.
+     * Lock.lock() 加锁，Lock.unlock() 解锁
+     * Condition.await() 释放锁，等待通知
+     * Condition.signalAll() 通知所有等待的线程可以尝试重新去获取锁，并且在Lock.unlock()之后，从等待的线程处继续执行
+     */
+    private void testCondition() {
+        Bank b = new Bank(3);
+        ConditionRunnable r = new ConditionRunnable(b, 5);
+        Thread t = new Thread(r);
+        t.start();
+
+        try {
+            Thread.sleep(1000);
+            b.addCount(10);
+            b.tryLock();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
     }
 }

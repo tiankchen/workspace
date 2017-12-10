@@ -3,9 +3,17 @@
         "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
 
+    <properties>
+        <property name="logImpl" value="LOG4J"/>
+    </properties>
+
     <typeAliases>
         <typeAlias alias="User" type="com.chenchen.models.User"/>
     </typeAliases>
+
+    <typeHandlers>
+        <typeHandler handler="org.apache.ibatis.type.EnumOrdinalTypeHandler" javaType="com.chenchen.models.Sex"/>
+    </typeHandlers>
 
     <environments default="home">
         <environment id="home">

@@ -62,9 +62,6 @@ public class Main {
      */
     public static void main(String[] args) {
 
-
-
-
         SqlSession session = sqlSessionFactory.openSession();
         try {
             UserMapper userMapper = session.getMapper(UserMapper.class);

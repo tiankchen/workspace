@@ -5,6 +5,11 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class Bank {
+    public enum Level
+    {
+        ERROR,
+        FATAL
+    }
     private Lock lock;
     private Condition bigThanEight;
     private int count;

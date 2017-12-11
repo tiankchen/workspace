@@ -1,8 +1,16 @@
 package com.chenchen;
 
+
+import com.chenchen.Bank.Level;
+
+import static com.chenchen.Bank.Level.ERROR;
+
+
 public class Main {
     public static void main(String args[]) {
         new Main().testCondition();
+        int i = ERROR.ordinal();
+        Level l =  Level.values()[1];
     }
 
 
